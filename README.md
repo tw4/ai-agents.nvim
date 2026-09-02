@@ -59,44 +59,36 @@ API key of your own, obviously.
 With [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
-{ "tw4/ai-agents.nvim", config = true }
+{ "tw4/ai-agents.nvim" }
 ```
 
-That is enough. The plugin declares its own dependencies and configures
-claudecode.nvim with the CLI path and diff layout described above; anything you
-set in your own claudecode.nvim spec is merged on top.
+That is the whole install. Dependencies are pulled in and configured, the
+mappings below work, and nothing loads until you first use it.
 
-If you would rather declare claudecode.nvim yourself, pass those defaults in:
+To pin a release:
 
 ```lua
-{
-  "coder/claudecode.nvim",
-  opts = function()
-    return require("ai_agents").claude_opts()
-  end,
-}
+{ "tw4/ai-agents.nvim", version = "*" }
 ```
 
-### Lazy loading
-
-The spec above loads at startup, which also loads claudecode.nvim and its
-snacks.nvim dependency. Nothing breaks, but snacks.nvim's healthcheck then
-reports `setup not called` and a handful of unrelated image-rendering errors,
-because it is being used as a library rather than set up as a plugin. To keep
-everything lazy, let lazy.nvim own the mappings instead:
+To change the mappings, override `keys` as you would for any lazy.nvim plugin:
 
 ```lua
 {
   "tw4/ai-agents.nvim",
-  opts = { keymaps = false },
-  cmd = { "AiAgents", "AiAgentsAccept", "AiAgentsDeny" },
   keys = {
-    { "<leader>ip", "<cmd>AiAgents<cr>", desc = "Pick AI provider" },
-    { "<leader>ia", "<cmd>AiAgentsAccept<cr>", desc = "Accept proposed changes" },
-    { "<leader>id", "<cmd>AiAgentsDeny<cr>", desc = "Reject proposed changes" },
+    { "<leader>ap", "<cmd>AiAgents<cr>", desc = "Pick AI provider" },
+    { "<leader>aa", "<cmd>AiAgentsAccept<cr>", desc = "Accept proposed changes" },
+    { "<leader>ad", "<cmd>AiAgentsDeny<cr>", desc = "Reject proposed changes" },
   },
 }
 ```
+
+With another plugin manager, install `coder/claudecode.nvim` and
+`olimorris/codecompanion.nvim` alongside it, then call
+`require("ai_agents").setup()` — that registers the default mappings itself, and
+`require("ai_agents").claude_opts()` returns the claudecode.nvim options
+described above.
 
 ## Configuration
 

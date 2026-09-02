@@ -36,8 +36,13 @@ Agents whose CLI is missing are listed last and name the binary they need.
   - coder/claudecode.nvim        (Claude Code)
   - olimorris/codecompanion.nvim (every other provider)
 
-Both are declared as dependencies, so with lazy.nvim installing this plugin
-installs them too.
+Both are declared as dependencies and configured for you, so with lazy.nvim
+the whole install is:
+>lua
+    { "tw4/ai-agents.nvim" }
+<
+Nothing loads until you first use a command or mapping. To change the mappings,
+override `keys` in your own spec.
 
 ==============================================================================
 3. SETUP                                                 *ai-agents-setup*
