@@ -62,7 +62,20 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
 { "tw4/ai-agents.nvim", config = true }
 ```
 
-That is enough — dependencies are declared by the plugin itself.
+That is enough. The plugin declares its own dependencies and configures
+claudecode.nvim with the CLI path and diff layout described above; anything you
+set in your own claudecode.nvim spec is merged on top.
+
+If you would rather declare claudecode.nvim yourself, pass those defaults in:
+
+```lua
+{
+  "coder/claudecode.nvim",
+  opts = function()
+    return require("ai_agents").claude_opts()
+  end,
+}
+```
 
 ## Configuration
 
