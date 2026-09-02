@@ -1,0 +1,113 @@
+*ai-agents.txt*   One picker for every AI coding agent
+
+==============================================================================
+CONTENTS                                              *ai-agents-contents*
+
+  1. Introduction .................... |ai-agents-introduction|
+  2. Requirements .................... |ai-agents-requirements|
+  3. Setup ........................... |ai-agents-setup|
+  4. Commands ........................ |ai-agents-commands|
+  5. Mappings ........................ |ai-agents-mappings|
+  6. Health .......................... |ai-agents-health|
+
+==============================================================================
+1. INTRODUCTION                                   *ai-agents-introduction*
+
+ai-agents.nvim lists every AI coding agent available to you -- Claude Code,
+OpenAI Codex, GitHub Copilot, opencode, Gemini CLI, and the API models
+CodeCompanion supports -- in a single picker, and gives you one pair of
+mappings to approve or reject the changes they propose.
+
+Providers come in two kinds:
+
+  ACP agent    An external CLI driven over the Agent Client Protocol. It edits
+               files and you approve each change in a diff. Needs its CLI
+               installed.
+
+  HTTP model   An API provider used for chat and inline edits. Needs an API
+               key.
+
+Agents whose CLI is missing are listed last and name the binary they need.
+
+==============================================================================
+2. REQUIREMENTS                                   *ai-agents-requirements*
+
+  - Neovim >= 0.10
+  - coder/claudecode.nvim        (Claude Code)
+  - olimorris/codecompanion.nvim (every other provider)
+
+Both are declared as dependencies, so with lazy.nvim installing this plugin
+installs them too.
+
+==============================================================================
+3. SETUP                                                 *ai-agents-setup*
+
+>lua
+    require("ai_agents").setup({
+      keymaps = true,
+      prefix = "<leader>i",
+      exclude = { "jina", "tavily", "duckduckgo" },
+      claude = {
+        resolve_cmd = true,
+        cmd_candidates = { "~/.local/bin/claude", "~/.claude/local/claude" },
+      },
+    })
+<
+                                                       *ai-agents-keymaps*
+keymaps ~
+    Register the default mappings. Set to false to bind the commands
+    yourself. Default: true
+
+prefix ~
+    Prefix for the default mappings. Default: "<leader>i"
+
+exclude ~
+    Adapters to hide from the picker. CodeCompanion ships a few that back the
+    @web_search tool rather than chat, and picking one fails confusingly.
+
+claude.resolve_cmd ~
+    Resolve an absolute path to the Claude CLI. A $HOME-local install is not
+    always on $PATH when Neovim starts outside a login shell, which makes
+    claudecode.nvim fail with "'claude' is not executable". Default: true
+
+claude.cmd_candidates ~
+    Paths tried, in order, before falling back to `claude` on $PATH.
+
+==============================================================================
+4. COMMANDS                                           *ai-agents-commands*
+
+                                                                *:AiAgents*
+:AiAgents           Pick a provider and open a session with it.
+
+                                                          *:AiAgentsAccept*
+:AiAgentsAccept     Accept the proposed changes in the current tab.
+
+                                                            *:AiAgentsDeny*
+:AiAgentsDeny       Reject the proposed changes in the current tab.
+
+==============================================================================
+5. MAPPINGS                                           *ai-agents-mappings*
+
+With the defaults:
+
+  <leader>ip    Pick a provider
+  <leader>ia    Accept the proposed changes
+  <leader>id    Reject the proposed changes
+
+Accept and reject work from either half of the diff. Claude Code's own commands
+only respond while the cursor is in the proposed buffer, and otherwise report
+"No active diff found in current buffer"; these move the cursor there first.
+
+The proposed buffer is an ordinary buffer -- edit it before accepting and your
+version is what gets written.
+
+==============================================================================
+6. HEALTH                                               *ai-agents-health*
+
+>vim
+    :checkhealth ai_agents
+<
+Reports which agent CLIs are installed, which are missing, and how to install
+them.
+
+vim:tw=78:ts=8:noet:ft=help:norl:
