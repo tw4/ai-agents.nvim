@@ -77,6 +77,27 @@ If you would rather declare claudecode.nvim yourself, pass those defaults in:
 }
 ```
 
+### Lazy loading
+
+The spec above loads at startup, which also loads claudecode.nvim and its
+snacks.nvim dependency. Nothing breaks, but snacks.nvim's healthcheck then
+reports `setup not called` and a handful of unrelated image-rendering errors,
+because it is being used as a library rather than set up as a plugin. To keep
+everything lazy, let lazy.nvim own the mappings instead:
+
+```lua
+{
+  "tw4/ai-agents.nvim",
+  opts = { keymaps = false },
+  cmd = { "AiAgents", "AiAgentsAccept", "AiAgentsDeny" },
+  keys = {
+    { "<leader>ip", "<cmd>AiAgents<cr>", desc = "Pick AI provider" },
+    { "<leader>ia", "<cmd>AiAgentsAccept<cr>", desc = "Accept proposed changes" },
+    { "<leader>id", "<cmd>AiAgentsDeny<cr>", desc = "Reject proposed changes" },
+  },
+}
+```
+
 ## Configuration
 
 Defaults shown; pass only what you want to change.
