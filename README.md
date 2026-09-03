@@ -8,7 +8,7 @@ and a dozen API models — but through two different plugins, with different
 commands, and with no way to tell which of them are actually installed until one
 fails. This plugin puts them behind a single list.
 
-![The picker: one list of every agent and model, filtered down and opened](assets/picker.gif)
+![The picker listing every agent and model, narrowed to one, and the session it opens](assets/picker.gif)
 
 ## What it does
 
