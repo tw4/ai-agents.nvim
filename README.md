@@ -113,6 +113,12 @@ require("ai_agents").setup({
 | `<leader>ia` | `:AiAgentsAccept` | Accept the proposed changes |
 | `<leader>id` | `:AiAgentsDeny` | Reject the proposed changes |
 
+![A larger change proposed in its own diff window, approved with <leader>ia](assets/diff.gif)
+
+Small changes are summarised inside the chat; past
+`display.diff.threshold_for_chat` changed lines CodeCompanion opens the diff in
+its own window, as above. `<leader>ia` resolves either one.
+
 You can edit the proposed buffer before accepting — what you accept is what you
 see, not what the agent originally wrote.
 
