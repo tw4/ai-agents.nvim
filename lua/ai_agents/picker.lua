@@ -21,6 +21,11 @@ local function claude_code_entry()
   }
 end
 
+---The provider the last session was opened with. Both backends can hide and
+---restore their own window, but only this knows which of them to ask.
+---@type AiAgents.Provider|nil
+local opened = nil
+
 ---Open a session with the given provider.
 ---@param provider AiAgents.Provider
 function M.open(provider)
@@ -33,12 +38,30 @@ function M.open(provider)
     return
   end
 
+  opened = provider
+
   if provider.native then
     vim.cmd("ClaudeCode")
     return
   end
 
   vim.cmd("CodeCompanionChat adapter=" .. provider.name)
+end
+
+---Hide the open session, or bring the last one back. With nothing opened yet
+---there is nothing to restore, so this falls through to the picker.
+function M.toggle()
+  if not opened then
+    return M.pick()
+  end
+
+  if opened.native then
+    -- :ClaudeCode is claudecode.nvim's own show/hide.
+    vim.cmd("ClaudeCode")
+    return
+  end
+
+  require("codecompanion").toggle()
 end
 
 ---Prompt for a provider and open it.

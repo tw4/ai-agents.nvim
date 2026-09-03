@@ -14,10 +14,12 @@ fails. This plugin puts them behind a single list.
 
 - **One picker (`<leader>ip`)** listing every agent and model available to you,
   usable ones first, with the missing binary named for the rest.
-- **Approve from either side of the diff (`<leader>ia` / `<leader>id`).**
-  Claude Code's own commands only work while the cursor is in the proposed
-  buffer and otherwise report `No active diff found in current buffer`; these
-  mappings jump there for you.
+- **One pair of approve/reject mappings (`<leader>ia` / `<leader>id`) for every
+  agent.** Claude Code answers to `:ClaudeCodeDiffAccept`, and only while the
+  cursor sits in the proposed buffer; every ACP agent and model CodeCompanion
+  drives answers to a keymap bound inside its own diff. These mappings find
+  whichever diff is on screen, jump to it, and resolve it.
+- **Show or hide the session (`<leader>it`)** without starting a second one.
 - **Finds a `$HOME`-local Claude CLI.** Started outside a login shell, Neovim
   often cannot see `~/.local/bin/claude` and claudecode.nvim fails with
   `'claude' is not executable`. The absolute path is resolved instead.
@@ -68,6 +70,7 @@ To change the mappings, override `keys` as you would for any lazy.nvim plugin:
   "tw4/ai-agents.nvim",
   keys = {
     { "<leader>ap", "<cmd>AiAgents<cr>", desc = "Pick AI provider" },
+    { "<leader>at", "<cmd>AiAgentsToggle<cr>", desc = "Show or hide the session" },
     { "<leader>aa", "<cmd>AiAgentsAccept<cr>", desc = "Accept proposed changes" },
     { "<leader>ad", "<cmd>AiAgentsDeny<cr>", desc = "Reject proposed changes" },
   },
@@ -106,6 +109,7 @@ require("ai_agents").setup({
 | Mapping | Command | Action |
 |---|---|---|
 | `<leader>ip` | `:AiAgents` | Pick a provider and open a session |
+| `<leader>it` | `:AiAgentsToggle` | Show or hide the session |
 | `<leader>ia` | `:AiAgentsAccept` | Accept the proposed changes |
 | `<leader>id` | `:AiAgentsDeny` | Reject the proposed changes |
 

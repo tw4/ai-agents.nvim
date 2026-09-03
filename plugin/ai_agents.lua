@@ -9,6 +9,10 @@ command("AiAgents", function()
   require("ai_agents").pick()
 end, { desc = "Pick a coding agent" })
 
+command("AiAgentsToggle", function()
+  require("ai_agents").toggle()
+end, { desc = "Show or hide the current session" })
+
 command("AiAgentsAccept", function()
   require("ai_agents").accept()
 end, { desc = "Accept the proposed changes" })

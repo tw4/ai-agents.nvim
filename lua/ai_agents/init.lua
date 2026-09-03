@@ -10,6 +10,10 @@ M.pick = function()
   require("ai_agents.picker").pick()
 end
 
+M.toggle = function()
+  require("ai_agents.picker").toggle()
+end
+
 M.accept = function()
   require("ai_agents.diff").accept()
 end
@@ -29,6 +33,7 @@ local function set_keymaps()
     vim.keymap.set("n", prefix .. suffix, fn, { desc = "Coding agents: " .. desc })
   end
   map("p", M.pick, "pick provider")
+  map("t", M.toggle, "show or hide the session")
   map("a", M.accept, "accept proposed changes")
   map("d", M.deny, "reject proposed changes")
 end

@@ -14,9 +14,10 @@
 return {
   "tw4/ai-agents.nvim",
   opts = { keymaps = false },
-  cmd = { "AiAgents", "AiAgentsAccept", "AiAgentsDeny" },
+  cmd = { "AiAgents", "AiAgentsToggle", "AiAgentsAccept", "AiAgentsDeny" },
   keys = {
     { "<leader>ip", "<cmd>AiAgents<cr>", desc = "Pick AI provider" },
+    { "<leader>it", "<cmd>AiAgentsToggle<cr>", desc = "Show or hide the session" },
     { "<leader>ia", "<cmd>AiAgentsAccept<cr>", desc = "Accept proposed changes" },
     { "<leader>id", "<cmd>AiAgentsDeny<cr>", desc = "Reject proposed changes" },
   },

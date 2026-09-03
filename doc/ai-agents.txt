@@ -84,11 +84,15 @@ claude.cmd_candidates ~
                                                                 *:AiAgents*
 :AiAgents           Pick a provider and open a session with it.
 
+                                                          *:AiAgentsToggle*
+:AiAgentsToggle     Hide the open session, or bring the last one back. With no
+                    session opened yet, falls through to the picker.
+
                                                           *:AiAgentsAccept*
-:AiAgentsAccept     Accept the proposed changes in the current tab.
+:AiAgentsAccept     Accept the changes an agent has proposed.
 
                                                             *:AiAgentsDeny*
-:AiAgentsDeny       Reject the proposed changes in the current tab.
+:AiAgentsDeny       Reject the changes an agent has proposed.
 
 ==============================================================================
 5. MAPPINGS                                           *ai-agents-mappings*
@@ -96,12 +100,17 @@ claude.cmd_candidates ~
 With the defaults:
 
   <leader>ip    Pick a provider
+  <leader>it    Show or hide the session
   <leader>ia    Accept the proposed changes
   <leader>id    Reject the proposed changes
 
-Accept and reject work from either half of the diff. Claude Code's own commands
-only respond while the cursor is in the proposed buffer, and otherwise report
-"No active diff found in current buffer"; these move the cursor there first.
+Accept and reject work whichever agent proposed the change, and from either
+half of the diff. The two backends are resolved differently and neither knows
+about the other: Claude Code answers to :ClaudeCodeDiffAccept, and only while
+the cursor is in the proposed buffer -- otherwise it reports "No active diff
+found in current buffer". Every ACP agent and model that CodeCompanion drives
+answers instead to a keymap bound inside its own diff buffer. These mappings
+find whichever of the two is on screen, move the cursor there, and resolve it.
 
 The proposed buffer is an ordinary buffer -- edit it before accepting and your
 version is what gets written.
