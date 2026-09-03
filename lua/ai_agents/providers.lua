@@ -30,28 +30,38 @@ local function agent_binary(adapter)
   return command[1]
 end
 
+---Adapter names come from CodeCompanion's own config rather than from the
+---completion of :CodeCompanionChat. The completion is only reachable when
+---nvim_get_commands() hands back a callable, which it does from Neovim 0.12
+---on; before that the `complete` field is the literal string "<Lua function>"
+---and every provider silently disappears.
 ---@return string[]|nil names, string|nil err
 local function adapter_names()
-  local ok = pcall(require, "codecompanion")
+  local ok, cc_config = pcall(require, "codecompanion.config")
   if not ok then
     return nil, "codecompanion.nvim is not installed"
   end
 
-  local command = vim.api.nvim_get_commands({})["CodeCompanionChat"]
-  if not command or not command.complete then
-    return nil, "the :CodeCompanionChat command is not available"
-  end
-
-  local line = "CodeCompanionChat adapter="
-  local completed, completions = pcall(command.complete, "adapter=", line, #line)
-  if not completed or type(completions) ~= "table" or #completions == 0 then
+  local groups = cc_config.adapters
+  if type(groups) ~= "table" then
     return nil, "CodeCompanion returned no adapters"
   end
 
   local names = {}
-  for _, item in ipairs(completions) do
-    table.insert(names, (item:gsub("^adapter=", "")))
+  for _, group in ipairs({ "acp", "http" }) do
+    for name in pairs(groups[group] or {}) do
+      -- `opts` sits alongside the adapters in both groups.
+      if name ~= "opts" then
+        table.insert(names, name)
+      end
+    end
   end
+
+  if #names == 0 then
+    return nil, "CodeCompanion returned no adapters"
+  end
+
+  table.sort(names)
   return names
 end
 

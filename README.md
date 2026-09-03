@@ -8,17 +8,7 @@ and a dozen API models — but through two different plugins, with different
 commands, and with no way to tell which of them are actually installed until one
 fails. This plugin puts them behind a single list.
 
-```
-Coding agent:
-  claude-code          ACP agent - proposes edits you approve
-  codex                ACP agent - proposes edits you approve
-  copilot_acp          ACP agent - proposes edits you approve
-  opencode             ACP agent - proposes edits you approve
-  anthropic            HTTP model
-  openai               HTTP model
-  ollama               HTTP model
-  gemini_cli           ACP agent - proposes edits you approve [gemini not installed]
-```
+![The picker: one list of every agent and model, filtered down and opened](assets/picker.gif)
 
 ## What it does
 

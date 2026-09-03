@@ -31,6 +31,12 @@ return {
     {
       "olimorris/codecompanion.nvim",
       dependencies = { "nvim-lua/plenary.nvim" },
+      -- CodeCompanion registers :CodeCompanionChat inside setup(), and that is
+      -- the command every HTTP model and ACP agent is opened with. lazy.nvim
+      -- only calls setup() for a spec that carries opts or config, so without
+      -- this picking a provider fails with "Not an editor command". Your own
+      -- opts are merged on top of this.
+      opts = {},
     },
   },
 }
